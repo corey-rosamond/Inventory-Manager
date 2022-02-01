@@ -2,8 +2,16 @@ import mongodb from "mongodb"
 const ObjectId = mongodb.ObjectID
 let products;
 
+/**
+ * Products Data Access Object
+ */
 export default class ProductsDAO
 {
+    /**
+     * Inject Db
+     * @param conn
+     * @returns {Promise<void>}
+     */
     static async injectDb(conn)
     {
         if(products)
@@ -22,6 +30,13 @@ export default class ProductsDAO
         }
     }
 
+    /**
+     * Get Products
+     * @param filters
+     * @param page
+     * @param productsPerPage
+     * @returns {Promise<{totalNumProducts: *, productList: *}|{totalNumProducts: number, productList: *[]}>}
+     */
     static async getProducts(
         {
             filters = null,
@@ -76,6 +91,17 @@ export default class ProductsDAO
         }
     }
 
+    /**
+     * Add Product
+     * @param name
+     * @param description
+     * @param purchase_price
+     * @param our_price
+     * @param retail_price
+     * @param quantity
+     * @param retail_link
+     * @returns {Promise<{error}|*>}
+     */
     static async addProduct(name, description, purchase_price, our_price, retail_price, quantity, retail_link)
     {
         try
@@ -100,6 +126,18 @@ export default class ProductsDAO
         }
     }
 
+    /**
+     * Update Product
+     * @param id
+     * @param name
+     * @param description
+     * @param purchase_price
+     * @param our_price
+     * @param retail_price
+     * @param quantity
+     * @param retail_link
+     * @returns {Promise<{error}|*>}
+     */
     static async updateProduct(id, name, description, purchase_price, our_price, retail_price, quantity, retail_link)
     {
         try
@@ -128,8 +166,22 @@ export default class ProductsDAO
         }
     }
 
+    /**
+     * Delete Product
+     * @param id
+     * @returns {Promise<void>}
+     */
     static async deleteProduct(id)
     {
-
+        try
+        {
+            const deleteResponse = await products.deleteOne({
+               _id: ObjectId(id)
+            });
+            return deleteResponse;
+        } catch(e)
+        {
+            console.error(`Unable to delete product ${e}`)
+        }
     }
 }
