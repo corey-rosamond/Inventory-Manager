@@ -137,6 +137,7 @@ export default class ProductsDAO
      * @param quantity
      * @param retail_link
      * @returns {Promise<{error}|*>}
+     * @todo Get and use original values if null is given
      */
     static async updateProduct(id, name, description, purchase_price, our_price, retail_price, quantity, retail_link)
     {

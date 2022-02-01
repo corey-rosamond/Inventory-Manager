@@ -141,7 +141,7 @@ export default class ProductsController
     {
         try
         {
-            const productId = req.query.id;
+            const productId = req.body.id;
             const deleteResponse = await ProductsDAO.deleteProduct(productId);
             res.json({status: "success"});
         } catch (e)
