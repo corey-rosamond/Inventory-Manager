@@ -7,16 +7,18 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 /** Import the components */
-
 import Login from "./components/login.js";
 import ProductList from "./components/product-list.js";
 import Products from "./components/products.js";
 
 
-
-
-
-
+/**
+ * Main App function
+ * @returns {JSX.Element}
+ * @constructor
+ *
+ * @todo implement real login system
+ */
 function App()
 {
     const [user, setUser] = React.useState(null);
@@ -24,7 +26,10 @@ function App()
     {
         setUser(user);
     }
-
+    async function logout()
+    {
+        setUser(null);
+    }
 
 
     return (
@@ -56,6 +61,8 @@ function App()
                             <Products {...props} user={user} />
                         )}
                     />
+
+
                     <Route
                         path="/login"
                         render={(props) => (
