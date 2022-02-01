@@ -75,4 +75,72 @@ export default class ProductsDAO
             };
         }
     }
+
+    static async addProduct(name, description, purchase_price, our_price, retail_price, quantity, retail_link, date_added)
+    {
+        try
+        {
+            const productDocument = {
+                name: name,
+                description: description,
+                purchase_price: purchase_price,
+                our_price: our_price,
+                retail_price: retail_price,
+                quantity: quantity,
+                retail_link: retail_link,
+                date_added: date_added
+            };
+            // Push the document into the database
+            return await products.insertOne(productDocument);
+        } catch(e)
+        {
+            console.error(`Unable to add product ${e}`);
+            return {
+                error: e
+            };
+        }
+    }
+
+    static async updateProduct(id, name, description, purchase_price, our_price, retail_price, quantity, retail_link)
+    {
+        try
+        {
+            const updateResponse = await products.updateOne(
+                { _id: ObjectId(id) },
+                {
+                    $set: {
+                        name: name,
+                        description: description,
+                        purchase_price: purchase_price,
+                        our_price: our_price,
+                        retail_price: retail_price,
+                        quantity: quantity,
+                        retail_link: retail_link
+                    }
+                }
+            );
+            return updateResponse;
+        } catch(e)
+        {
+            console.error(`unable to update product: ${e}`);
+            return {
+                error: e
+            };
+        }
+    }
+
+    static async deleteProduct(id)
+    {
+        try
+        {
+            const deleteResponse = await products.deleteOne({_id: objectID(id)});
+            return deleteResponse;
+        } catch (e)
+        {
+            console.error(`Unable to delete product: ${e}`);
+            return {
+                error: e
+            };
+        }
+    }
 }
