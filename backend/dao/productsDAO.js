@@ -76,7 +76,7 @@ export default class ProductsDAO
         }
     }
 
-    static async addProduct(name, description, purchase_price, our_price, retail_price, quantity, retail_link, date_added)
+    static async addProduct(name, description, purchase_price, our_price, retail_price, quantity, retail_link)
     {
         try
         {
@@ -87,8 +87,7 @@ export default class ProductsDAO
                 our_price: our_price,
                 retail_price: retail_price,
                 quantity: quantity,
-                retail_link: retail_link,
-                date_added: date_added
+                retail_link: retail_link
             };
             // Push the document into the database
             return await products.insertOne(productDocument);
@@ -131,16 +130,6 @@ export default class ProductsDAO
 
     static async deleteProduct(id)
     {
-        try
-        {
-            const deleteResponse = await products.deleteOne({_id: objectID(id)});
-            return deleteResponse;
-        } catch (e)
-        {
-            console.error(`Unable to delete product: ${e}`);
-            return {
-                error: e
-            };
-        }
+
     }
 }
