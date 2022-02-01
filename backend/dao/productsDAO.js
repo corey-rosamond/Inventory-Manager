@@ -92,6 +92,23 @@ export default class ProductsDAO
     }
 
     /**
+     * Get Product By Id
+     * @param id
+     * @returns {Promise<void>}
+     */
+    static async getProductById(id)
+    {
+        try
+        {
+
+
+        } catch(e)
+        {
+
+        }
+    }
+
+    /**
      * Add Product
      * @param name
      * @param description

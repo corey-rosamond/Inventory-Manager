@@ -45,6 +45,32 @@ export default class ProductsController
     }
 
     /**
+     * API Get Product by Id
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     */
+    static async apiGetProductById(req, res, next)
+    {
+        try
+        {
+            let id = req.params.id || {};
+            let product = await ProductsDAO.getProductById(id);
+            if(!product)
+            {
+                res.status(404).json({error: "not found"});
+                return;
+            }
+            res.json(product);
+        } catch(e)
+        {
+            console.log(`api, ${e}`);
+            res.status(500).json({error: e});
+        }
+    }
+
+    /**
      * API Add Product
      * @param req
      * @param res
