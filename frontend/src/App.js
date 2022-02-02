@@ -26,10 +26,10 @@ function App()
     {
         setUser(user);
     }
-    async function logout()
+    /**async function logout()
     {
         setUser(null);
-    }
+    }*/
 
 
     return (

@@ -31,9 +31,9 @@ class ProductDataService
         return http.get(`?page=${page}`);
     }
 
-    find(query, by = "name", page = 0)
+    find(by = "name", query, page = 0)
     {
-
+        return http.get(`?${by}=${query}&page=${page}`);
     }
 
     createProduct(data)
