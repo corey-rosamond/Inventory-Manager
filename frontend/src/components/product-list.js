@@ -8,7 +8,6 @@ import { faTrash, faEdit, faEye } from '@fortawesome/fontawesome-free-solid'
 //import { Link } from "react-router-dom"
 
 function ProductList()
-
 {
     const [products, setProducts] = useState([]);
     const [searchName, setSearchName] = useState("");
