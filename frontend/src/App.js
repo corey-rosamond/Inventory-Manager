@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login.js";
 import ProductList from "./components/product-list.js";
 import Products from "./components/products.js";
+import AddProduct from "./components/add-product";
 
 
 /**
@@ -44,6 +45,11 @@ function App()
                             Products
                         </Link>
                     </li>
+                    <li className="navbar-nav mr-auto">
+                        <Link to={"/AddProduct"} className="nav-link">
+                            Add Product
+                        </Link>
+                    </li>
                     <li className="nav-item">
                         <Link to={"/login"} className="nav-link">
                             Login
@@ -61,7 +67,12 @@ function App()
                             <Products {...props} user={user} />
                         )}
                     />
-
+                    <Route
+                        path="/AddProduct"
+                        render={(props)=>(
+                            <AddProduct {...props} />
+                        )}
+                    />
 
                     <Route
                         path="/login"
