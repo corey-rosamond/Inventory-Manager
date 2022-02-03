@@ -3,8 +3,16 @@ import UsersController from "./users.controller.js";
 
 const router = express.Router();
 
-router.post('/registration', UsersController.apiUserRegistration);
-router.post('/login', UsersController.apiUserLogin);
-router.post('/logout', UsersController.apiUserLogout);
+router.route('/add')
+    .post(UsersController.apiAddUser);
+
+router.route('/login')
+    .post(UsersController.apiLogin);
+
+router.route('/forgot-password')
+    .post(UsersController.apiForgotPassword);
+
+router.route('/reset-password/:reset_token')
+    .put(UsersController.apiResetPassword);
 
 export default router;

@@ -1,16 +1,18 @@
 import express from "express";
 import cors from "cors";
-import products from "./api/products.route.js";
-
+import users_router from "./api/users.route.js";
+import products_router from "./api/products.route.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+// Handle users route api calls
+app.use("/api/v1/users", users_router);
 
-// Handle inventory api calls
-app.use("/api/v1/products", products);
+// Handle product route api calls
+app.use("/api/v1/products", products_router);
 
 // Catch 404 Errors
 app.use('*', (req, res) => {
