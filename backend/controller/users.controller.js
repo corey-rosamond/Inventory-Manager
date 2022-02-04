@@ -109,13 +109,13 @@ export default class UsersController
      */
     static async apiForgotPassword(req, res, next)
     {
-        console.log("api forgot password")
+        console.log("controller forgot password")
     }
 
     /**
      * API Reset Password
      *
-     * This will handle api reset password requests.
+     * This will handle controller reset password requests.
      * @param req
      * @param res
      * @param next
@@ -124,6 +124,6 @@ export default class UsersController
      */
     static async apiResetPassword(req, res, next)
     {
-        console.log("api reset password")
+        console.log("controller reset password")
     }
 }

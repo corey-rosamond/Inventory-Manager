@@ -62,7 +62,9 @@ UsersSchema.methods.matchPassword = async function(password)
 }
 
 /**
+ * Get Signed Token
  *
+ * This will get and return a signed token.
  * @returns {*}
  * @todo look into why jwt is saying it needs 4 parameters.
  */
