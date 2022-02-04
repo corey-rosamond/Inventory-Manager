@@ -29,4 +29,5 @@ class database
     }
 }
 
+// Export the database object.
 export default database;
