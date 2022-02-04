@@ -100,7 +100,7 @@ export default class UsersController
                 .status(200)
                 .json({
                     success: true,
-                    token: "adsfasdfasdf"
+                    token: user.getSignedToken()
                 });
 
         } catch (error)

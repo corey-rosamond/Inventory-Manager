@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from "bcrypt";
+import jsonwebtoken from "jsonwebtoken";
 
 const UsersSchema = new mongoose.Schema({
     username: {
@@ -46,6 +47,11 @@ async function(next){
 UsersSchema.methods.matchPassword = async function(password)
 {
     return await bcrypt.compare(password, this.password);
+}
+
+UsersSchema.methods.getSignedToken = function()
+{
+    return jsonwebtoken.sign({id: this._id});
 }
 
 const UsersModel = mongoose.model("Users", UsersSchema);
