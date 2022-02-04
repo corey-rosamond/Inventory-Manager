@@ -1,21 +1,117 @@
-import UsersDAO from "../dao/UsersDAO.js";
+import UsersModel from "../model/users.model.js";
 
+/**
+ * User Controller
+ *
+ * This is the User Controller it will handle all interactions related to users.
+ */
 export default class UsersController
 {
-
-
-    static async apiAddUser(req, res, next)
+    /**
+     * API Add User
+     *
+     * This method will handle all add user requests.
+     * @param request
+     * @param response
+     * @param next
+     * @returns {Promise<*>}
+     */
+    static async apiAddUser(request, response, next)
     {
-        //let { name, email, password, password_confirmation } = req.body;
-        console.log("api add user");
-
+        try
+        {
+            let {username, email_address, password} = request.body;
+            let user = UsersModel.create({
+                username,
+                email_address,
+                password
+            });
+            return response.status(201)
+                .json({
+                    success: true,
+                    user
+                });
+        } catch (error)
+        {
+            response.status(500)
+                .json({
+                    success: false,
+                    error: error.message
+                });
+        }
 
     }
 
-    static async apiLogin(req, res, next)
+    /**
+     * API Login
+     *
+     * This handles the API Login requests.
+     * @param request
+     * @param response
+     * @param next
+     * @returns {Promise<void>}
+     */
+    static async apiLogin(request, response, next)
     {
-        //let { email, password } = req.body;
-        console.log("api login");
+        try
+        {
+            let { email_address, password } = request.body;
+            if(!email_address)
+            {
+                return request.
+                status(400)
+                    .json({
+                        success: false,
+                        error: "Email Address not provided!"
+                    });
+            }
+            if(!password)
+            {
+                return request.
+                status(400)
+                    .json({
+                        success: false,
+                        error: "Password not provided!"
+                    });
+            }
+            let user = await UsersModel
+                .findOne({email_address})
+                .select("password");
+            if(!user)
+            {
+                return response
+                    .status(401)
+                    .json({
+                        success: false,
+                        error: "Invalid Credentials!"
+                    });
+            }
+            let is_match = await user.matchPassword(password);
+            if(!is_match)
+            {
+                return response
+                    .status(401)
+                    .json({
+                        success: false,
+                        error: "Invalid Credentials!"
+                    });
+            }
+            return response
+                .status(200)
+                .json({
+                    success: true,
+                    token: "adsfasdfasdf"
+                });
+
+        } catch (error)
+        {
+            return response
+                .status(500)
+                .json({
+                    success: false,
+                    error: error.message
+                });
+        }
     }
 
     static async apiForgotPassword(req, res, next)

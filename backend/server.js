@@ -1,8 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config({path: ".env"});
 import express from "express";
 import cors from "cors";
 import users_router from "./api/users.route.js";
 import products_router from "./api/products.route.js";
+import database from "./config/database.js";
 
+database.connect();
 const app = express();
 
 app.use(cors());
@@ -19,6 +23,15 @@ app.use('*', (req, res) => {
     res.status(404).json({
         error: "not found"
     });
+});
+
+const PORT = process.env.PORT || 500;
+
+const server = app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+
+process.on("unhandledRejection", (error, promise) => {
+    console.log(`Logged Error: ${error}`);
+    server.close(process.exit(1));
 });
 
 export default app;
