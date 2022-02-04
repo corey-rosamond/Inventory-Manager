@@ -1,8 +1,18 @@
 import mongoose from "mongoose";
 
-export default class database
+/**
+ * Database
+ *
+ * Default Mongoose database object
+ */
+class database
 {
-
+    /**
+     * connect
+     *
+     * Connect to the mongo db.
+     * @returns {Promise<void>}
+     */
     static async connect()
     {
         await mongoose.connect(
@@ -18,3 +28,5 @@ export default class database
         console.log("MongoDB Connected");
     }
 }
+
+export default database;
