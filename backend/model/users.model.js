@@ -49,9 +49,20 @@ UsersSchema.methods.matchPassword = async function(password)
     return await bcrypt.compare(password, this.password);
 }
 
+/**
+ *
+ * @returns {*}
+ * @todo look into why jwt is saying it needs 4 parameters.
+ */
 UsersSchema.methods.getSignedToken = function()
 {
-    return jsonwebtoken.sign({id: this._id});
+    return jsonwebtoken.sign(
+        {id: this._id},
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRE
+        }
+    );
 }
 
 const UsersModel = mongoose.model("Users", UsersSchema);
