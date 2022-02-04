@@ -5,6 +5,7 @@ import cors from "cors";
 import users_router from "./api/users.route.js";
 import products_router from "./api/products.route.js";
 import database from "./config/database.js";
+import ErrorHandler from './middleware/error.handler.js'
 
 database.connect();
 const app = express();
@@ -24,6 +25,9 @@ app.use('*', (req, res) => {
         error: "not found"
     });
 });
+
+// Error handler must be last.
+app.use(ErrorHandler.do);
 
 const PORT = process.env.PORT || 500;
 

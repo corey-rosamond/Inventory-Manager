@@ -1,4 +1,5 @@
 import UsersModel from "../model/users.model.js";
+import ErrorResponse from "../utils/error.response.js";
 
 /**
  * User Controller
@@ -29,17 +30,15 @@ export default class UsersController
             return response.status(201)
                 .json({
                     success: true,
-                    user
+                    token: user.getSignedToken()
                 });
         } catch (error)
         {
-            response.status(500)
-                .json({
-                    success: false,
-                    error: error.message
-                });
+            /**
+             * Call next and give it the error. The error handler should take it from here.
+             */
+            next(error);
         }
-
     }
 
     /**
@@ -55,46 +54,35 @@ export default class UsersController
     {
         try
         {
-            let { email_address, password } = request.body;
+            let {
+                email_address,
+                password
+            } = request.body;
+
             if(!email_address)
             {
-                return request.
-                status(400)
-                    .json({
-                        success: false,
-                        error: "Email Address not provided!"
-                    });
+                return next(new ErrorResponse("Email Address not provided!", 400));
             }
+
             if(!password)
             {
-                return request.
-                status(400)
-                    .json({
-                        success: false,
-                        error: "Password not provided!"
-                    });
+                return next(new ErrorResponse("Password not provided!", 400));
             }
+
             let user = await UsersModel
                 .findOne({email_address})
                 .select("password");
+
             if(!user)
             {
-                return response
-                    .status(401)
-                    .json({
-                        success: false,
-                        error: "Invalid Credentials!"
-                    });
+                return next(new ErrorResponse("Invalid Credentials!", 401));
             }
+
             let is_match = await user.matchPassword(password);
+
             if(!is_match)
             {
-                return response
-                    .status(401)
-                    .json({
-                        success: false,
-                        error: "Invalid Credentials!"
-                    });
+                return next(new ErrorResponse("Invalid Credentials!", 401));
             }
             return response
                 .status(200)
@@ -105,23 +93,37 @@ export default class UsersController
 
         } catch (error)
         {
-            return response
-                .status(500)
-                .json({
-                    success: false,
-                    error: error.message
-                });
+            next(error);
         }
     }
 
+    /**
+     * API Forgot Password
+     *
+     * This will handle forgot password requests.
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     * @todo Finish this
+     */
     static async apiForgotPassword(req, res, next)
     {
         console.log("api forgot password")
     }
 
+    /**
+     * API Reset Password
+     *
+     * This will handle api reset password requests.
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     * @todo finish this
+     */
     static async apiResetPassword(req, res, next)
     {
         console.log("api reset password")
     }
-
 }

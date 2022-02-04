@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 
+/**
+ * Defining the Users Schema
+ * @type {module:mongoose.Schema<any, Model<any, any, any, any>, any, any>}
+ */
 const UsersSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -44,6 +48,14 @@ async function(next){
     }
 );
 
+/**
+ * Match Password
+ *
+ * This method will determine if a user password provided
+ * matches the user objects password.
+ * @param password
+ * @returns {Promise<void|*>}
+ */
 UsersSchema.methods.matchPassword = async function(password)
 {
     return await bcrypt.compare(password, this.password);
@@ -65,6 +77,8 @@ UsersSchema.methods.getSignedToken = function()
     );
 }
 
+// Create the model
 const UsersModel = mongoose.model("Users", UsersSchema);
 
+// Export the Model
 export default UsersModel;
