@@ -101,15 +101,46 @@ export default class UsersController
      * API Forgot Password
      *
      * This will handle forgot password requests.
-     * @param req
-     * @param res
+     * @param request
+     * @param response
      * @param next
      * @returns {Promise<void>}
-     * @todo Finish this
      */
-    static async apiForgotPassword(req, res, next)
+    static async apiForgotPassword(request, response, next)
     {
-        console.log("controller forgot password")
+        try
+        {
+            let { email_address } = request.body;
+            let user = await UsersModel.findOne({email_address});
+
+            if(!user)
+            {
+                return next(new ErrorResponse("Email could not be sent!"), 404);
+            }
+
+            let reset_token = user.getResetPasswordToken();
+
+            await user.save();
+
+            let reset_url = `https://localhost:3000/password_reset/${reset_token}`;
+            let message = `
+                <h1>You have requested a password reset</h1>
+                <p>Please go to this link to reset your password</p>
+                <a href=${reset_url} clicktracking=off>${reset_token}</a>
+            `;
+            // @todo do some searching on nested javascript try catch statements this feels dirty.
+            try
+            {
+
+            } catch (error)
+            {
+
+            }
+
+        } catch(error)
+        {
+            next(next);
+        }
     }
 
     /**

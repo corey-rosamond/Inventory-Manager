@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
+import crypto from "crypto";
 
 /**
  * Defining the Users Schema
@@ -77,6 +78,20 @@ UsersSchema.methods.getSignedToken = function()
             expiresIn: process.env.JWT_EXPIRE
         }
     );
+}
+
+
+UsersSchema.methods.getResetPasswordToken = function()
+{
+    let reset_token = crypto.randomBytes(20).toString("hex");
+    this.reset_password_token = crypto
+        .createHash("sha256")
+        .update(reset_token)
+        .digest("hex");
+
+    this.reset_password_expire = Date.now() + 15 * (60 * 1000);
+
+    return reset_token;
 }
 
 // Create the model
