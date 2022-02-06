@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer";
 
 /**
- * Email
+ * SendEmail
  *
  * This class will facilitate the sending of email.
  */
-class Email
+class SendEmail
 {
-    static async send(options)
+    static async do(options)
     {
         let transporter = nodemailer.createTransport({
             service: process.env.EMAIL_SERVICE,
@@ -35,10 +35,7 @@ class Email
             }
         )
     }
-
-
-
 }
 
 // Export the email class.
-export default Email;
+export default SendEmail;

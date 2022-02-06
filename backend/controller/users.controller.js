@@ -1,5 +1,6 @@
 import UsersModel from "../model/users.model.js";
 import ErrorResponse from "../utils/error.response.js";
+import SendEmail from "../utils/send.email.js";
 
 /**
  * User Controller
@@ -61,7 +62,7 @@ export default class UsersController
 
             if(!email_address)
             {
-                return next(new ErrorResponse("Email Address not provided!", 400));
+                return next(new ErrorResponse("SendEmail Address not provided!", 400));
             }
 
             if(!password)
@@ -115,7 +116,7 @@ export default class UsersController
 
             if(!user)
             {
-                return next(new ErrorResponse("Email could not be sent!"), 404);
+                return next(new ErrorResponse("SendEmail could not be sent!"), 404);
             }
 
             let reset_token = user.getResetPasswordToken();
@@ -131,12 +132,25 @@ export default class UsersController
             // @todo do some searching on nested javascript try catch statements this feels dirty.
             try
             {
-
+                await SendEmail.do({
+                    to: user.email_address,
+                    subject: "Reset Password Request",
+                    text: message
+                });
+                response.status(200)
+                    .json({
+                        success: true,
+                        data: "Email Sent"
+                    });
             } catch (error)
             {
+                user.reset_password_token = undefined;
+                user.reset_password_expire = undefined;
 
+                await user.save();
+
+                next(new ErrorResponse("Email could not be sent!"), 500);
             }
-
         } catch(error)
         {
             next(next);
