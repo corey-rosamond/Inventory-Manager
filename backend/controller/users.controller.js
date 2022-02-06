@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import UsersModel from "../model/users.model.js";
 import ErrorResponse from "../utils/error.response.js";
 import SendEmail from "../utils/send.email.js";
@@ -7,7 +8,7 @@ import SendEmail from "../utils/send.email.js";
  *
  * This is the User Controller it will handle all interactions related to users.
  */
-export default class UsersController
+class UsersController
 {
     /**
      * API Add User
@@ -50,6 +51,7 @@ export default class UsersController
      * @param response
      * @param next
      * @returns {Promise<void>}
+     * @todo Add ability to login with username as well as email address
      */
     static async apiLogin(request, response, next)
     {
@@ -125,7 +127,9 @@ export default class UsersController
 
             let reset_url = `https://localhost:3000/password_reset/${reset_token}`;
             let message = `
-                <h1>You have requested a password reset</h1>
+                <h1
+                >You have requested a password reset</h1
+                >
                 <p>Please go to this link to reset your password</p>
                 <a href=${reset_url} clicktracking=off>${reset_token}</a>
             `;
@@ -161,14 +165,45 @@ export default class UsersController
      * API Reset Password
      *
      * This will handle controller reset password requests.
-     * @param req
-     * @param res
+     * @param request
+     * @param response
      * @param next
      * @returns {Promise<void>}
-     * @todo finish this
+     * @todo add a password verification field to make sure the user typed it correctly.
      */
-    static async apiResetPassword(req, res, next)
+    static async apiResetPassword(request, response, next)
     {
-        console.log("controller reset password")
+        try {
+            let reset_password_token = crypto
+                .createHash("sha256")
+                .update(request.params.reset_token)
+                .digest("hex");
+            let user = await UsersModel.findOne({
+                reset_password_token: reset_password_token,
+                reset_password_expire: {
+                    $gt: Date.now()
+                }
+            });
+            if(!user)
+            {
+                return next(new ErrorResponse("Invalid reset token!", 400));
+            }
+
+            user.password = request.body.password;
+            user.reset_password_token = undefined;
+            user.reset_password_expire = undefined;
+            await user.save();
+            response.status(201)
+                .json({
+                    success: true,
+                    data: "Password reset success"
+                });
+        } catch(error)
+        {
+            next(error);
+        }
     }
 }
+
+// Export the UsersController.
+export default UsersController;

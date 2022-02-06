@@ -80,7 +80,14 @@ UsersSchema.methods.getSignedToken = function()
     );
 }
 
-
+/**
+ * Get Reset Password Token
+ *
+ * This will generate a password reset token in the user document and set the
+ * password reset expire to the amount of minutes from now defined in the JWT_EXPIRE
+ * env variable.
+ * @returns {string}
+ */
 UsersSchema.methods.getResetPasswordToken = function()
 {
     let reset_token = crypto.randomBytes(20).toString("hex");
@@ -89,7 +96,7 @@ UsersSchema.methods.getResetPasswordToken = function()
         .update(reset_token)
         .digest("hex");
 
-    this.reset_password_expire = Date.now() + 15 * (60 * 1000);
+    this.reset_password_expire = Date.now() + parseInt(process.env.JWT_EXPIRE) * (60 * 1000);
 
     return reset_token;
 }
