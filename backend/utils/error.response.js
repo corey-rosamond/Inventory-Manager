@@ -15,7 +15,6 @@ class ErrorResponse extends Error
         super(message);
         this.statusCode = code;
     }
-
 }
 
 // Export the ErrorResponse class.

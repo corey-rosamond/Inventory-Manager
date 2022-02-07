@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import axios from "axios";
 import {
     Link
@@ -21,19 +20,37 @@ class LoginScreen extends React.Component
         };
     }
 
-
+    /**
+     * On Email Change
+     *
+     * Called on email value change
+     * @param event
+     */
     onEmailChange(event)
     {
         let target = event.target;
         this.setState({email_address: target.value});
     }
 
+    /**
+     * On Password Change
+     *
+     * Called on password value change
+     * @param event
+     */
     onPasswordChange(event)
     {
         let target = event.target;
         this.setState({password: target.value});
     }
 
+    /**
+     * On Submit
+     *
+     * This processes the on login form submit.
+     * @param event
+     * @returns {Promise<void>}
+     */
     async onSubmit(event)
     {
         try
@@ -41,33 +58,23 @@ class LoginScreen extends React.Component
             event.preventDefault();
             let email_address = this.state.email_address;
             let password = this.state.password;
-            const config = {
-                header:{
-                    'Content-Type': 'application/json'
-                }
-            };
-
             let data = await axios.post(
                 "http://127.0.0.1:5000/api/users/login",
                 {
                     email_address,
                     password
-                },
-                config
-            ).then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error.response);
-            });
-
-            //localStorage.setItem("authorization_token", data.token);
+                }
+            );
+            localStorage.setItem("authorization_token", data.token);
+            this.props.history.push("/");
         } catch(error)
         {
-            console.log(error)
-            //this.setState({
-//                error: error.response.data.error
-//            });
+            this.setState({
+                error: error.response.data.error
+            });
+            setTimeout(() => {
+                this.setState({error: ""});
+            },5000);
         }
     }
 
@@ -95,6 +102,12 @@ class LoginScreen extends React.Component
                         </div>
                         <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                             <form onSubmit={this.onSubmit.bind(this)}>
+                                {this.state.error &&
+                                    <div id="error-message" className="alert alert-danger" role="alert">
+                                        {this.state.error}
+                                    </div>
+                                }
+
                                 <div className="form-outline mb-4">
                                     <label className="form-label" htmlFor="email_address">
                                         Email Address:
@@ -146,90 +159,3 @@ class LoginScreen extends React.Component
 
 // Export the LoginScreen
 export default LoginScreen;
-
-
-/**
- const LoginScreen = ({ history }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-        if (localStorage.getItem("authToken")) {
-            history.push("/");
-        }
-    }, [history]);
-
-    const loginHandler = async (e) => {
-        e.preventDefault();
-
-        const config = {
-            header: {
-                "Content-Type": "application/json",
-            },
-        };
-
-        try {
-            const { data } = await axios.post(
-                "/api/auth/login",
-                { email, password },
-                config
-            );
-
-            localStorage.setItem("authToken", data.token);
-
-            history.push("/");
-        } catch (error) {
-            setError(error.response.data.error);
-            setTimeout(() => {
-                setError("");
-            }, 5000);
-        }
-    };
-
-    return (
-        <div className="login-screen">
-            <form onSubmit={loginHandler} className="login-screen__form">
-                <h3 className="login-screen__title">Login</h3>
-                {error && <span className="error-message">{error}</span>}
-                <div className="form-group">
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        required
-                        id="email"
-                        placeholder="Email address"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                        tabIndex={1}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">
-                        Password:{" "}
-                        <Link to="/forgotpassword" className="login-screen__forgotpassword">
-                            Forgot Password?
-                        </Link>
-                    </label>
-                    <input
-                        type="password"
-                        required
-                        id="password"
-                        autoComplete="true"
-                        placeholder="Enter password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        tabIndex={2}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">
-                    Login
-                </button>
-
-                <span className="login-screen__subtext">
-          Don't have an account? <Link to="/register">Register</Link>
-        </span>
-            </form>
-        </div>
-    );
-};*/
