@@ -1,89 +1,53 @@
 import React from "react";
 import {
+    BrowserRouter as Router,
     Switch,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-/** Import the components */
-import Login from "./components/login.js";
-import ProductList from "./components/product-list.js";
-import Products from "./components/products.js";
-import AddProduct from "./components/add-product";
+// Routing
+import PrivateRoute from "./component/route/private.route.js";
+
+// Screens
+import PrivateScreen from "./component/screen/private.screen";
+import LoginScreen from "./component/screen/login.screen";
+import AddUserScreen from "./component/screen/add_user.screen";
+import ForgotPasswordScreen from "./component/screen/forgot_password.screen";
+import ResetPasswordScreen from "./component/screen/reset_password.screen";
 
 
 /**
  * Main App function
  * @returns {JSX.Element}
- * @constructor
- *
- * @todo implement real login system
  */
-function App()
+class App extends React.Component
 {
-    const [user, setUser] = React.useState(null);
-    async function login(user = null)
+    render()
     {
-        setUser(user);
-    }
-    /**async function logout()
-    {
-        setUser(null);
-    }*/
-
-
-    return (
-        <div>
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
-                <a href="/inventory" className="navbar-brand">
-                    &nbsp;The Mystery Market
-                </a>
-                <div className="navbar-nav mr-auto">
-                    <li className="nav-item">
-                        <Link to={"/products"} className="nav-link">
-                            Products
-                        </Link>
-                    </li>
-                    <li className="navbar-nav mr-auto">
-                        <Link to={"/AddProduct"} className="nav-link">
-                            Add Product
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to={"/login"} className="nav-link">
-                            Login
-                        </Link>
-                    </li>
+        return (
+            <Router>
+                <div className="app">
+                    <Switch>
+                        <PrivateRoute exact path="/" component={PrivateScreen} />
+                        <Route exact path="/login" component={LoginScreen} />
+                        <Route exact path="/add-user" component={AddUserScreen} />
+                        <Route
+                            exact
+                            path="/forgot-password"
+                            component={ForgotPasswordScreen}
+                        />
+                        <Route
+                            exact
+                            path="/reset-password/:reset_token"
+                            component={ResetPasswordScreen}
+                        />
+                    </Switch>
                 </div>
-            </nav>
-
-            <div className="container mt-3">
-                <Switch>
-                    <Route exact path={["/", "/products"]} component={ProductList} />
-                    <Route
-                        path="/products/:id"
-                        render={(props) => (
-                            <Products {...props} user={user} />
-                        )}
-                    />
-                    <Route
-                        path="/AddProduct"
-                        render={(props)=>(
-                            <AddProduct {...props} />
-                        )}
-                    />
-
-                    <Route
-                        path="/login"
-                        render={(props) => (
-                            <Login {...props} login={login} />
-                        )}
-                    />
-                </Switch>
-            </div>
-        </div>
-    );
+            </Router>
+        );
+    }
 }
 
+// Export the App
 export default App;

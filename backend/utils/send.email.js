@@ -26,11 +26,9 @@ class SendEmail
             mail_options,
             function(error, information)
             {
-                if(error) {
-                    console.log(error);
-                } else
+                if(error)
                 {
-                    console.log(information)
+                    console.log(error);
                 }
             }
         )

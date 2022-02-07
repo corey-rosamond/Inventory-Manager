@@ -14,10 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 // Handle users route controller calls
-app.use("/api/v1/users", users_router);
+app.use("/api/users", users_router);
 
 // Handle product route controller calls
-app.use("/api/v1/products", products_router);
+app.use("/api/products", products_router);
 
 // Catch 404 Errors
 app.use('*', (req, res) => {
