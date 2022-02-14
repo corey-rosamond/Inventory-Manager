@@ -35,7 +35,8 @@ const ProductsSchema = new mongoose.Schema({
     type: Number
   },
   photo_1: {
-    type: String
+    type: String,
+    required: {true: "Please provide at least one photo!"}
   },
   photo_2: {
     type: String
@@ -51,6 +52,14 @@ const ProductsSchema = new mongoose.Schema({
   },
   photo_6: {
     type: String
+  },
+  date_added: {
+    type: Date,
+    default: Date.now
+  },
+  last_updated: {
+    type: Date,
+    default: Date.now
   }
 });
 
@@ -107,6 +116,23 @@ ProductsSchema.path('selling_at').get(function(number){
 ProductsSchema.path('selling_at').set(function(number){
   return number*100;
 });
+
+/**
+ * pre: save
+ *
+ * This method is triggered on save and sets the last updated date to now and if
+ * the date added is not set it will also apply now to that.
+ */
+ProductsSchema.pre('save', function(next){
+  let now = new Date();
+  this.last_updated = now;
+  if(!this.date_added)
+  {
+    this.date_added = now;
+  }
+  next()
+})
+
 
 // Create the model
 const ProductsModel = mongoose.model("Products", ProductsSchema);

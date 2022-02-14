@@ -24,7 +24,7 @@ class UsersController
         try
         {
             let {username, email_address, password} = request.body;
-            let user = UsersModel.create({
+            let user = await UsersModel.create({
                 username,
                 email_address,
                 password
