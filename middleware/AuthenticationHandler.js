@@ -1,6 +1,6 @@
-import ErrorResponse from "../utils/error.response.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
 import jsonwebtoken from "jsonwebtoken";
-import UsersModel from "../model/users.model.js";
+import UsersModel from "../model/UsersModel.js";
 
 /**
  * Authentication Handler

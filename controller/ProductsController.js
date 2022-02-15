@@ -1,5 +1,5 @@
-import ProductsModel from "../model/products.model.js";
-import ErrorResponse from "../utils/error.response.js";
+import ProductsModel from "../model/ProductsModel.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
 
 /**
  * Product Controller

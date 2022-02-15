@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import UsersModel from "../model/users.model.js";
-import ErrorResponse from "../utils/error.response.js";
-import SendEmail from "../utils/send.email.js";
+import UsersModel from "../model/UsersModel.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
+import SendEmail from "../utils/SendEmail.js";
 
 /**
  * User Controller

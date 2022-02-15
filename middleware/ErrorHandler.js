@@ -1,4 +1,4 @@
-import ErrorResponse from "../utils/error.response.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
 
 /**
  * Error Handler

@@ -10,7 +10,8 @@ import crypto from "crypto";
 const UsersSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: {true: 'Please provide a username!'}
+        required: {true: 'Please provide a username!'},
+        unique: true
     },
     password: {
         type: String,
