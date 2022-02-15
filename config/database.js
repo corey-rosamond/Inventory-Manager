@@ -5,7 +5,7 @@ import mongoose from "mongoose";
  *
  * Default Mongoose database object
  */
-class database
+class Database
 {
     /**
      * connect
@@ -24,10 +24,9 @@ class database
                 wtimeoutMS: 2500
             }
         );
-
         console.log("MongoDB Connected");
     }
 }
 
 // Export the database object.
-export default database;
+export default Database;

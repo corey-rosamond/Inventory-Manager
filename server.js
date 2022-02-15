@@ -4,10 +4,10 @@ import express from "express";
 import cors from "cors";
 import users_router from "./route/users.route.js";
 import products_router from "./route/products.route.js";
-import database from "./config/database.js";
+import Database from "./config/database.js";
 import ErrorHandler from './middleware/error.handler.js'
 
-database.connect();
+Database.connect();
 const app = express();
 
 app.use(cors());

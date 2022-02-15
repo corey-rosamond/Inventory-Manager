@@ -22,7 +22,12 @@ export default class ProductsController
         null,
         {limit: 50}
       );
-      return products;
+      response
+        .status(200)
+        .json({
+          success: true,
+          data: products
+        });
     } catch (error)
     {
       next(error);
