@@ -7,7 +7,8 @@ import crypto from "crypto";
  * Defining the Users Schema
  * @type {module:mongoose.Schema<any, Model<any, any, any, any>, any, any>}
  */
-const UsersSchema = new mongoose.Schema({
+const UsersSchema = new mongoose.Schema(
+  {
     username: {
         type: String,
         required: {true: 'Please provide a username!'},
@@ -28,9 +29,15 @@ const UsersSchema = new mongoose.Schema({
             "Please provide a valid email"
         ]
     },
+    is_admin: {
+        type: Boolean,
+        default: false
+    },
     reset_password_token: String,
-    reset_password_expire: Date
-});
+    reset_password_expire: Date,
+    },
+  {timestamps: true}
+);
 
 /**
  * This method tells mongoose that before we save a password

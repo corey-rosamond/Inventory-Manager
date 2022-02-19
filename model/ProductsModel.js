@@ -53,6 +53,15 @@ const ProductsSchema = new mongoose.Schema({
   photo_6: {
     type: String
   },
+  size: {
+    type: String
+  },
+  color: {
+    type: String
+  },
+  categories: {
+    type: Array
+  },
   date_added: {
     type: Date,
     default: Date.now

@@ -15,6 +15,7 @@ export default class ProductsController
    */
   static async apiGetProducts(request, response, next)
   {
+    console.log("here")
     try
     {
       let products = await ProductsModel.find(
@@ -22,15 +23,15 @@ export default class ProductsController
         null,
         {limit: 50}
       );
-      response
-        .status(200)
+      return response
+        .status(201)
         .json({
           success: true,
           data: products
         });
     } catch (error)
     {
-      next(error);
+      return next(error);
     }
   }
 
