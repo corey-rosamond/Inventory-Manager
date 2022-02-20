@@ -15,7 +15,6 @@ export default class ProductsController
    */
   static async apiGetProducts(request, response, next)
   {
-    console.log("here")
     try
     {
       let products = await ProductsModel.find(

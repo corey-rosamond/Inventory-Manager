@@ -2,16 +2,20 @@ import dotenv from "dotenv";
 dotenv.config({path: ".env"});
 import express from "express";
 import cors from "cors";
+import category_router from "./route/CategoryRouter.js";
 import users_router from "./route/UsersRoute.js";
 import products_router from "./route/ProductsRoute.js";
 import Database from "./config/Database.js";
-import ErrorHandler from './middleware/ErrorHandler.js'
+import ErrorHandler from './middleware/ErrorHandler.js';
 
 Database.connect();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Product Category Routes.
+app.use("/api/category", category_router);
 
 // Handle users route controller calls
 app.use("/api/users", users_router);
