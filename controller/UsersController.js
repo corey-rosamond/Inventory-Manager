@@ -58,13 +58,14 @@ class UsersController
         try
         {
             let {
-                email_address,
+                username,
                 password
             } = request.body;
 
-            if(!email_address)
+            if(!username)
             {
-                return next(new ErrorResponse("SendEmail Address not provided!", 400));
+
+                return next(new ErrorResponse("Username or Email address not provided!", 400));
             }
 
             if(!password)
@@ -73,7 +74,7 @@ class UsersController
             }
 
             let user = await UsersModel
-                .findOne({email_address})
+                .findOne({$or: [{email_address: username}, {username: username}]})
                 .select("password");
 
             if(!user)
