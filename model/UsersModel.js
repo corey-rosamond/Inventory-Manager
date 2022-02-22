@@ -67,6 +67,10 @@ async function(next){
  */
 UsersSchema.methods.matchPassword = async function(password)
 {
+    if(!this.password)
+    {
+        return false;
+    }
     return await bcrypt.compare(password, this.password);
 }
 
@@ -80,7 +84,10 @@ UsersSchema.methods.matchPassword = async function(password)
 UsersSchema.methods.getSignedToken = function()
 {
     return jsonwebtoken.sign(
-        {id: this._id},
+        {
+            id: this._id,
+            isAdmin: this.isAdmin
+        },
         process.env.JWT_SECRET,
         {
             expiresIn: process.env.JWT_EXPIRE

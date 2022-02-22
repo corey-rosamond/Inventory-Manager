@@ -51,7 +51,6 @@ class UsersController
      * @param response
      * @param next
      * @returns {Promise<void>}
-     * @todo Add ability to login with username as well as email address
      */
     static async apiLogin(request, response, next)
     {
@@ -64,7 +63,6 @@ class UsersController
 
             if(!username)
             {
-
                 return next(new ErrorResponse("Username or Email address not provided!", 400));
             }
 
@@ -88,13 +86,15 @@ class UsersController
             {
                 return next(new ErrorResponse("Invalid Credentials!", 401));
             }
+
+            let userData = await UsersModel.findById(user._id);
+
             return response
                 .status(200)
                 .json({
                     success: true,
-                    token: user.getSignedToken()
+                    user: userData
                 });
-
         } catch (error)
         {
             next(error);
