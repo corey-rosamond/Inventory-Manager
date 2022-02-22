@@ -51,6 +51,7 @@ class UsersController
      * @param response
      * @param next
      * @returns {Promise<void>}
+     * @todo return data is missing JWT
      */
     static async apiLogin(request, response, next)
     {
@@ -89,11 +90,15 @@ class UsersController
 
             let userData = await UsersModel.findById(user._id);
 
+            let signedToken = userData.getSignedToken();
+            let userJSON = userData.toJSON();
+            userJSON.signedToken = signedToken;
+
             return response
                 .status(200)
                 .json({
                     success: true,
-                    user: userData
+                    user: userJSON
                 });
         } catch (error)
         {
